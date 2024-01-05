@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A minimal web utility to calculate the Keccak-256 hashes for all the events in a Solidity code block.">
+  <meta property="og:title" content="Event Hashes">
+  <meta property="og:description" content="A minimal web utility to calculate the Keccak-256 hashes for all the events in a Solidity code block.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://event-hashes.ardis.lu/">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="/Inter.woff2" as="font" crossorigin>
+  <link rel="preload" href="/Inter_600.woff2" as="font" crossorigin>
+  <link rel="preload" href="/Inter_700.woff2" as="font" crossorigin>
+  <link rel="modulepreload" href="/keccak256.js">
+  <link rel="icon" href="data:,">
+  <title>Event Hashes</title>
+  <style>
+    @font-face {
+      font-family: 'Inter';
+      font-weight: 400;
+      src: url('/Inter.woff2') format('woff2');
+    }
+
+    @font-face {
+      font-family: 'Inter';
+      font-weight: 600;
+      src: url('/Inter_600.woff2') format('woff2');
+    }
+
+    @font-face {
+      font-family: 'Inter';
+      font-weight: 700;
+      src: url('/Inter_700.woff2') format('woff2');
+    }
+
+    * {
+      margin: 0;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    :root {
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      min-block-size: 100dvb;
+      margin-inline: 8px;
+      background: hsl(216deg 50% 95%);
+      color: hsl(216deg 50% 5%);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header,
+    footer {
+      margin-block: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+    }
+
+    header p {
+      text-align: center;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      inline-size: min(100dvi - 16px, 720px);
+      margin-inline: auto;
+      gap: 8px;
+    }
+
+    label {
+      font-weight: 700;
+    }
+
+    textarea {
+      align-self: center;
+      min-inline-size: 100%;
+      max-inline-size: calc(100dvi - 32px);
+      min-block-size: 15rem;
+      padding: 4px;
+      border-radius: 4px;
+      border: 1px solid hsl(216deg 50% 80%);
+    }
+
+    table {
+      display: none;
+      border-collapse: collapse;
+      overflow-x: auto;
+      align-self: center;
+    }
+
+    tr {
+      transition: background-color 400ms;
+    }
+
+    tr:hover,
+    tr:focus-within {
+      background: hsl(222deg 50% 90%);
+      transition: background-color 200ms;
+    }
+
+    th,
+    td {
+      line-height: 2;
+      padding-block: 8px;
+      padding-inline: 4px 16px;
+    }
+
+    a {
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Event Hashes</h1>
+    <p>Enter Solidity code below to calculate the Keccak-256 hashes for all the events.</p>
+  </header>
+
+  <main>
+    <label for="code">Solidity code</label>
+    <textarea id="code" placeholder="event Transfer(address indexed _from, address indexed _to, uint256 _value)" autocomplete="off"></textarea>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Normalized Event Signature</th>
+          <th>Keccak-256 Hash</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <footer>
+    <a href="https://github.com/ardislu/event-hashes">GitHub</a>
+  </footer>
+
+  <script type="module">
+    // From noble-hashes v1.3.3
+    import { keccak256 } from '/keccak256.js';
+
+    function normalizeEvent(event) {
+      // Clean all characters that definitely do not affect the signature
+      const commentIndex = event.indexOf('//');
+      event = commentIndex === -1 ? event : event.substring(0, commentIndex);
+      event = event.trim();
+
+      // Split the event name and the event topics
+      const eventRegex = /^(event )?(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*)\((?<topics>.*?)(?!.+\))/;
+      const { name, topics } = eventRegex.exec(event).groups;
+
+      // Drop parameter names and extraneous whitespace, if there are any. Preserves tuple parentheses.
+      // E.g. "(uint abc, uint256, bool test)[]" --> ['(uint', 'uint256', 'bool)[]']
+      const topicArray = topics.split(',').map(topic => {
+        const trimmed = topic.trim();
+        const trailingParens = trimmed.match(/\)*[\[\]]*$/)[0] ?? '';
+        const split = trimmed.split(' ');
+        return `${split[0]}${split.length > 1 ? trailingParens : ''}`;
+      });
+
+      // Convert types from Solidity to ABI (e.g., 'uint' --> 'uint256')
+      // Reference: https://docs.soliditylang.org/en/latest/abi-spec.html#types
+      for (const [index, topic] of topicArray.entries()) {
+        if (/int[1-9]/.test(topic) || /uint[1-9]/.test(topic)) {
+          continue;
+        }
+        topicArray[index] = topic
+          .replace('int', 'int256') // Includes uint --> uint256
+          .replace('contract', 'address')
+          .replace('enum', 'uint8');
+      }
+
+      const types = topicArray.join(',');
+      return `${name}(${types})`;
+    }
+
+    function getEvents(code) {
+      const events = new Set();
+      for (let line of code.split('\n')) {
+        line = line.trim();
+        if (line === '') {
+          continue;
+        }
+        try {
+          const normalizedEvent = normalizeEvent(line);
+          events.add(normalizedEvent);
+        }
+        catch {
+          continue;
+        }
+      }
+      return Array.from(events);
+    }
+
+    function debounce(fn, wait) {
+      let timeoutId;
+      return () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(fn, wait);
+      }
+    }
+
+    const encoder = new TextEncoder();
+    const textarea = document.querySelector('textarea');
+    const table = document.querySelector('table');
+    const tableBody = document.querySelector('table tbody');
+    textarea.addEventListener('input', debounce(() => {
+      table.style.setProperty('display', 'none');
+      tableBody.innerHTML = '';
+
+      const events = getEvents(textarea.value);
+      if (events.length === 0) {
+        return;
+      }
+
+      for (const event of events) {
+        const byteArray = keccak256(encoder.encode(event));
+        const hash = `0x${[...byteArray].map(b => b.toString(16).padStart(2, '0')).join('')}`;
+        tableBody.insertAdjacentHTML('beforeend', `<tr><td>${event}</td><td>${hash}</td></tr>`);
+      }
+      table.style.setProperty('display', 'revert');
+    }, 250));
+  </script>
+</body>
+
+</html>
