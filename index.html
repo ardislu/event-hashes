@@ -48,16 +48,17 @@
 
     body {
       min-block-size: 100dvb;
-      margin-inline: 8px;
       background: hsl(216deg 50% 95%);
       color: hsl(216deg 50% 5%);
       display: grid;
       grid-template-rows: auto 1fr auto;
+      container-type: inline-size;
     }
 
     header,
     footer {
       margin-block: 36px;
+      margin-inline: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -74,7 +75,7 @@
     main {
       display: flex;
       flex-direction: column;
-      inline-size: min(100dvi - 16px, 720px);
+      inline-size: min(100cqi - 16px, 720px);
       margin-inline: auto;
       gap: 8px;
     }
@@ -86,7 +87,7 @@
     textarea {
       align-self: center;
       min-inline-size: 100%;
-      max-inline-size: calc(100dvi - 32px);
+      max-inline-size: calc(100cqi - 16px);
       min-block-size: 15rem;
       padding: 4px;
       border-radius: 4px;
@@ -94,7 +95,7 @@
     }
 
     .table-container {
-      inline-size: calc(100dvi - 16px);
+      inline-size: min(100cqi - 16px);
       align-self: center;
       overflow: auto;
     }
