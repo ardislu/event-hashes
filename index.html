@@ -93,11 +93,16 @@
       border: 1px solid hsl(216deg 50% 80%);
     }
 
+    .table-container {
+      inline-size: calc(100dvi - 16px);
+      align-self: center;
+      overflow: auto;
+    }
+
     table {
       display: none;
       border-collapse: collapse;
-      overflow-x: auto;
-      align-self: center;
+      margin: auto;
     }
 
     tr {
@@ -139,15 +144,17 @@
     <label for="code">Solidity code</label>
     <textarea id="code" placeholder="event Transfer(address indexed _from, address indexed _to, uint256 _value)" autocomplete="off"></textarea>
 
-    <table>
-      <thead>
-        <tr>
-          <th><abbr title="Normalized event signature">Event</abbr></th>
-          <th>Keccak-256 Hash</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th><abbr title="Normalized event signature">Event</abbr></th>
+            <th>Keccak-256 Hash</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </main>
 
   <footer>
