@@ -161,14 +161,16 @@
     // From noble-hashes v1.3.3
     import { keccak256 } from '/keccak256.js';
 
-    function normalizeEvent(event) {
+    function normalizeEvent(event, strict = false) {
       // Clean all characters that definitely do not affect the signature
       const commentIndex = event.indexOf('//');
       event = commentIndex === -1 ? event : event.substring(0, commentIndex);
       event = event.trim();
 
       // Split the event name and the event topics
-      const eventRegex = /^(event )?(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*)\((?<topics>.*?)(?!.+\))/;
+      const eventRegex = strict ?
+        /^(event )(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*)\((?<topics>.*?)(?!.+\))/ :
+        /^(event )?(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*)\((?<topics>.*?)(?!.+\))/;
       const { name, topics } = eventRegex.exec(event).groups;
 
       // Drop parameter names and extraneous whitespace, if there are any. Preserves tuple parentheses.
@@ -198,13 +200,18 @@
 
     function getEvents(code) {
       const events = new Set();
+      let strict = false;
       for (let line of code.split('\n')) {
         line = line.trim();
         if (line === '') {
           continue;
         }
+        if (line.substring(0, 8) === 'contract' || line.substring(0, 17) === 'abstract contract') {
+          strict = true;
+          continue;
+        }
         try {
-          const normalizedEvent = normalizeEvent(line);
+          const normalizedEvent = normalizeEvent(line, strict);
           events.add(normalizedEvent);
         }
         catch {
