@@ -94,9 +94,11 @@
     }
 
     table {
-      display: none;
+      visibility: hidden;
+      opacity: 0;
       border-collapse: collapse;
       margin: auto;
+      transition: opacity 300ms;
     }
 
     tr {
@@ -225,7 +227,8 @@
     const table = document.querySelector('table');
     const tableBody = document.querySelector('table tbody');
     textarea.addEventListener('input', debounce(() => {
-      table.style.setProperty('display', 'none');
+      table.style.setProperty('visibility', 'hidden');
+      table.style.setProperty('opacity', 0);
       tableBody.innerHTML = '';
 
       const events = getEvents(textarea.value);
@@ -238,7 +241,8 @@
         const hash = `0x${[...byteArray].map(b => b.toString(16).padStart(2, '0')).join('')}`;
         tableBody.insertAdjacentHTML('beforeend', `<tr><td>${event}</td><td>${hash}</td></tr>`);
       }
-      table.style.setProperty('display', 'revert');
+      table.style.setProperty('visibility', 'visible');
+      table.style.setProperty('opacity', 1);
     }, 250));
   </script>
 </body>
