@@ -30,3 +30,11 @@ Then calculate the `keccak256` hash of the UTF-8 encoded bytes of the normalized
 This hash may then be used in another tool to filter a smart contract's logs, e.g. [in Etherscan](https://etherscan.io/address/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48#events):
 
 ![The "Events" page of a token smart contract on Etherscan, filtered to only the events matching the previously calculated Keccak-256 hash.](./.github/etherscan.webp)
+
+## Features
+
+**Intelligently parse entire smart contracts**
+
+There's no need to manually extract the event signatures from the smart contract code. The tool will automatically ignore lines that don't contain event signatures.
+
+![Demonstration of the event-hashes web UI parsing an entire Solidity smart contract and ignoring lines of code that don't contain events.](./.github/parse-smart-contract.webp)
