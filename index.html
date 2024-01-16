@@ -73,8 +73,33 @@
       gap: 8px;
     }
 
+    .label-container {
+      display: flex;
+      gap: 4px;
+    }
+
     label {
       font-weight: 700;
+    }
+
+    button {
+      background: none;
+      border: none;
+      padding: 8px;
+      margin: -8px;
+      cursor: pointer;
+      transition: filter 400ms;
+      color: hsl(216deg 50% 40%);
+    }
+
+    button:hover,
+    button:focus-within {
+      filter: drop-shadow(0 0 12px hsl(216deg 50% 50%));
+      transition: filter 200ms;
+    }
+
+    button>svg {
+      block-size: 100%;
     }
 
     textarea {
@@ -137,7 +162,16 @@
   </header>
 
   <main>
-    <label for="code">Solidity code</label>
+    <div class="label-container">
+      <label for="code">Solidity code</label>
+      <button>
+        <svg role="img" aria-labelledby="link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <title id="link">Copy permalink to clipboard</title>
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
+      </button>
+    </div>
     <textarea id="code" placeholder="event Transfer(address indexed _from, address indexed _to, uint256 _value)" autocomplete="off"></textarea>
 
     <div class="table-container">
@@ -160,6 +194,25 @@
   <script type="module">
     // From noble-hashes v1.3.3
     import { keccak256 } from '/keccak256.js';
+
+    async function textToGzipBase64(text) {
+      const stream = new Blob([text]).stream();
+      const compressed = stream.pipeThrough(new CompressionStream('gzip'));
+      const buffer = new Uint8Array(await new Response(compressed).arrayBuffer());
+      let encoded = '';
+      buffer.forEach(byte => encoded += String.fromCharCode(byte));
+      const b64 = btoa(encoded);
+      return b64;
+    }
+
+    async function gzipBase64ToText(b64) {
+      const encoded = atob(b64);
+      const buffer = Uint8Array.from(encoded, c => c.charCodeAt(0));
+      const stream = new Blob([buffer]).stream();
+      const decompressed = stream.pipeThrough(new DecompressionStream('gzip'));
+      const text = await new Response(decompressed).text();
+      return text;
+    }
 
     function normalizeEvent(event, strict = false) {
       // Clean all characters that definitely do not affect the signature
@@ -251,6 +304,17 @@
       table.style.setProperty('visibility', 'visible');
       table.style.setProperty('opacity', 1);
     }, 250));
+
+    document.querySelector('button').addEventListener('click', async e => {
+      const b64 = await textToGzipBase64(textarea.value);
+      const url = `${location.origin}#${b64}`;
+      navigator.clipboard.writeText(url);
+    });
+
+    if (location.hash !== '') {
+      gzipBase64ToText(location.hash.substring(1)).then(text => textarea.value = text);
+      textarea.dispatchEvent(new Event('input'));
+    }
   </script>
 </body>
 
