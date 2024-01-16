@@ -259,7 +259,7 @@
         if (line === '') {
           continue;
         }
-        if (line.substring(0, 8) === 'contract' || line.substring(0, 17) === 'abstract contract') {
+        if (line.substring(0, 15) === 'pragma solidity' || line.substring(0, 8) === 'contract' || line.substring(0, 17) === 'abstract contract') {
           strict = true;
           continue;
         }
