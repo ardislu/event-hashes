@@ -100,6 +100,7 @@
 
     button>svg {
       block-size: 100%;
+      pointer-events: none;
     }
 
     textarea {
@@ -164,9 +165,8 @@
   <main>
     <div class="label-container">
       <label for="code">Solidity code</label>
-      <button>
-        <svg role="img" aria-labelledby="link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <title id="link">Copy permalink to clipboard</title>
+      <button title="Copy permalink to clipboard" aria-label="Copy permalink to clipboard">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
           <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
         </svg>
@@ -305,10 +305,24 @@
       table.style.setProperty('opacity', 1);
     }, 250));
 
+    // Set up "Copy permalink to clipboard" button
+    const checkSVG = '<polyline points="20 6 9 17 4 12"/>';
+    const permalinkSVG = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />';
     document.querySelector('button').addEventListener('click', async e => {
       const b64 = await textToGzipBase64(textarea.value);
       const url = `${location.origin}#${b64}`;
       navigator.clipboard.writeText(url);
+
+      const button = e.target;
+      button.setAttribute('aria-label', 'Copied!');
+      const svg = button.querySelector('svg');
+      svg.style.setProperty('stroke', 'green');
+      svg.innerHTML = checkSVG;
+      setTimeout(() => {
+        svg.innerHTML = permalinkSVG;
+        svg.style.setProperty('stroke', 'currentColor');
+        button.setAttribute('aria-label', 'Copy permalink to clipboard');
+      }, 2000);
     });
 
     if (location.hash !== '') {
