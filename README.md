@@ -9,7 +9,7 @@ This is a minimal web utility to calculate the `keccak256` hashes of the normali
 
 ## Example
 
-![Demonstration of the event-hashes web UI hashing the ERC-20 Transfer event.](./.github/event-hashes.webp)
+![Demonstration of the event-hashes web UI hashing the ERC-20 Transfer event.](./.github/event-hashes.png)
 
 Given the [standard ERC-20 `Transfer` event](https://ercs.ethereum.org/ERCS/erc-20#events):
 
@@ -31,7 +31,7 @@ Then calculate the `keccak256` hash of the UTF-8 encoded bytes of the normalized
 
 This hash may then be used in another tool to filter a smart contract's logs, e.g. [in Etherscan](https://etherscan.io/address/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48#events):
 
-![The "Events" page of a token smart contract on Etherscan, filtered to only the events matching the previously calculated Keccak-256 hash.](./.github/etherscan.webp)
+![The "Events" page of a token smart contract on Etherscan, filtered to only the events matching the previously calculated Keccak-256 hash.](./.github/etherscan.png)
 
 ## Features
 
@@ -39,4 +39,4 @@ This hash may then be used in another tool to filter a smart contract's logs, e.
 
 There's no need to manually extract the event signatures from the smart contract code. The tool will automatically ignore lines that don't contain event signatures.
 
-![Demonstration of the event-hashes web UI parsing an entire Solidity smart contract and ignoring lines of code that don't contain events.](./.github/parse-smart-contract.webp)
+![Demonstration of the event-hashes web UI parsing an entire Solidity smart contract and ignoring lines of code that don't contain events.](./.github/parse-smart-contract.png)
