@@ -113,6 +113,13 @@
       border: 1px solid hsl(216deg 50% 80%);
     }
 
+    .no-events {
+      display: none;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
     .table-container {
       inline-size: min(100cqi - 16px);
       align-self: center;
@@ -175,6 +182,7 @@
     <textarea id="code" placeholder="event Transfer(address indexed _from, address indexed _to, uint256 _value)" autocomplete="off"></textarea>
 
     <div class="table-container">
+      <p class="no-events">No events found. Try another code block.</p>
       <table>
         <thead>
           <tr>
@@ -284,15 +292,18 @@
 
     const encoder = new TextEncoder();
     const textarea = document.querySelector('textarea');
+    const noEventsMessage = document.querySelector('.no-events');
     const table = document.querySelector('table');
     const tableBody = document.querySelector('table tbody');
     textarea.addEventListener('input', debounce(() => {
+      noEventsMessage.style.setProperty('display', 'none');
       table.style.setProperty('visibility', 'hidden');
       table.style.setProperty('opacity', 0);
       tableBody.innerHTML = '';
 
       const events = getEvents(textarea.value);
       if (events.length === 0) {
+        noEventsMessage.style.setProperty('display', 'revert');
         return;
       }
 
