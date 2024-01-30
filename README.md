@@ -11,7 +11,7 @@ This is a minimal web utility to calculate the `keccak256` hashes of the normali
 
 ![Demonstration of the event-hashes web UI hashing the ERC-20 Transfer event.](./.github/event-hashes.webp)
 
-Given the [standard ERC-20 `Transfer` event](https://eips.ethereum.org/EIPS/eip-20#events):
+Given the [standard ERC-20 `Transfer` event](https://ercs.ethereum.org/ERCS/erc-20#events):
 
 ```
 event Transfer(address indexed _from, address indexed _to, uint256 _value)
