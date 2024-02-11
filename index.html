@@ -229,8 +229,8 @@
 
       // Split the event name and the event topics
       const eventRegex = strict ?
-        /^(event )(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*)\((?<topics>.*?)(?!.+\))/ :
-        /^(event )?(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*)\((?<topics>.*?)(?!.+\))/;
+        /^(event )(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*) *\((?<topics>.*?)(?!.+\))/ :
+        /^(event )?(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*) *\((?<topics>.*?)(?!.+\))/;
       const { name, topics } = eventRegex.exec(event).groups;
 
       // Drop parameter names and extraneous whitespace, if there are any. Preserves tuple parentheses.
