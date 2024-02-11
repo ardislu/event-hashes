@@ -270,6 +270,18 @@
           strict = true;
           continue;
         }
+        // Basic lookahead for event definitions that span multiple lines
+        if ((line.match(/\(/g)?.length ?? 0) > (line.match(/\)/g)?.length ?? 0)) {
+          const start = code.indexOf(line);
+          const end = code.indexOf(')', start);
+          const lookaheadLine = code.substring(start, end + 1).replaceAll('\n', '');
+          try {
+            const normalizedEvent = normalizeEvent(lookaheadLine, strict);
+            events.add(normalizedEvent);
+          }
+          catch { }
+          continue;
+        }
         try {
           const normalizedEvent = normalizeEvent(line, strict);
           events.add(normalizedEvent);

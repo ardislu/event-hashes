@@ -5,7 +5,6 @@ This is a minimal web utility to calculate the `keccak256` hashes of the normali
 > [!WARNING]<br>
 > **Known issues:**
 > - This tool won't work with [user-defined value types](https://docs.soliditylang.org/en/latest/types.html#user-defined-value-types). For events that include these types, you must manually convert the user-defined value type into its equivalent primitive type.
-> - This tool won't work with multi-line event definitions. For events that span multiple lines, you must manually collapse the definition into one line.
 
 ## Example
 
