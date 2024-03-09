@@ -125,6 +125,15 @@
       overflow: auto;
     }
 
+    .button-container {
+      visibility: hidden;
+      opacity: 0;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      transition: opacity 300ms;
+    }
+
     table {
       visibility: hidden;
       opacity: 0;
@@ -171,7 +180,7 @@
   <main>
     <div class="label-container">
       <label for="code">Solidity code</label>
-      <button title="Copy permalink to clipboard" aria-label="Copy permalink to clipboard">
+      <button id="copy-permalink" title="Copy permalink to clipboard" aria-label="Copy permalink to clipboard">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
           <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
@@ -179,6 +188,23 @@
       </button>
     </div>
     <textarea id="code" placeholder="event Transfer(address indexed _from, address indexed _to, uint256 _value)" autocomplete="off"></textarea>
+
+    <div class="button-container">
+      <button id="download-table" title="Download table to CSV file" aria-label="Download table to CSV file">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+          <polyline points="14 2 14 8 20 8" />
+          <path d="M12 18v-6" />
+          <path d="m9 15 3 3 3-3" />
+        </svg>
+      </button>
+      <button id="copy-table" title="Copy table to clipboard" aria-label="Copy table to clipboard">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+        </svg>
+      </button>
+    </div>
 
     <div class="table-container">
       <p class="no-events">No events found. Try another code block.</p>
@@ -309,10 +335,13 @@
     const noEventsMessage = document.querySelector('.no-events');
     const table = document.querySelector('table');
     const tableBody = document.querySelector('table tbody');
+    const buttonContainer = document.querySelector('.button-container');
     textarea.addEventListener('input', debounce(() => {
       noEventsMessage.style.setProperty('display', 'none');
       table.style.setProperty('visibility', 'hidden');
       table.style.setProperty('opacity', 0);
+      buttonContainer.style.setProperty('visibility', 'hidden');
+      buttonContainer.style.setProperty('opacity', 0);
       tableBody.innerHTML = '';
 
       const events = getEvents(textarea.value);
@@ -328,26 +357,54 @@
       }
       table.style.setProperty('visibility', 'visible');
       table.style.setProperty('opacity', 1);
+      buttonContainer.style.setProperty('visibility', 'visible');
+      buttonContainer.style.setProperty('opacity', 1);
     }, 250));
 
-    // Set up "Copy permalink to clipboard" button
+    // Set up buttons
     const checkSVG = '<polyline points="20 6 9 17 4 12"/>';
     const permalinkSVG = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />';
-    document.querySelector('button').addEventListener('click', async e => {
-      const b64 = await textToGzipBase64(textarea.value);
-      const url = `${location.origin}#${b64}`;
-      navigator.clipboard.writeText(url);
+    const downloadSVG = '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" />';
+    const clipboardSVG = '<rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />';
 
-      const button = e.target;
+    function debounceButton(button, icon, message) {
       button.setAttribute('aria-label', 'Copied!');
       const svg = button.querySelector('svg');
       svg.style.setProperty('stroke', 'green');
       svg.innerHTML = checkSVG;
       setTimeout(() => {
-        svg.innerHTML = permalinkSVG;
+        svg.innerHTML = icon;
         svg.style.setProperty('stroke', 'currentColor');
-        button.setAttribute('aria-label', 'Copy permalink to clipboard');
+        button.setAttribute('aria-label', message);
       }, 2000);
+    }
+
+    document.querySelector('#copy-permalink').addEventListener('click', async e => {
+      const b64 = await textToGzipBase64(textarea.value);
+      const url = `${location.origin}#${b64}`;
+      navigator.clipboard.writeText(url);
+      debounceButton(e.target, permalinkSVG, 'Copy permalink to clipboard');
+    });
+
+    document.querySelector('#download-table').addEventListener('click', async e => {
+      const table = document.querySelector('table');
+      const csv = '"' + table.innerText.replaceAll('"', '""').replaceAll('\t', '","').replaceAll('\n', '"\n"') + '"';
+      const file = new File([csv], `Event_Hashes_${Date.now()}`, { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(file);
+      a.download = file.name;
+      a.click();
+      debounceButton(e.target, downloadSVG, 'Download table to CSV');
+    });
+
+    document.querySelector('#copy-table').addEventListener('click', async e => {
+      const table = document.querySelector('table');
+      const data = [new ClipboardItem({
+        'text/plain': new Blob([table.innerText], { type: 'text/plain' }),
+        'text/html': new Blob([table.outerHTML], { type: 'text/html' })
+      })];
+      navigator.clipboard.write(data);
+      debounceButton(e.target, clipboardSVG, 'Copy table to clipboard');
     });
 
     if (location.hash !== '') {
