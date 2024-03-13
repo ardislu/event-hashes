@@ -134,6 +134,10 @@
       transition: opacity 300ms;
     }
 
+    .button-container p {
+      flex-grow: 1;
+    }
+
     table {
       visibility: hidden;
       opacity: 0;
@@ -190,6 +194,7 @@
     <textarea id="code" placeholder="event Transfer(address indexed _from, address indexed _to, uint256 _value)" autocomplete="off" spellcheck="false"></textarea>
 
     <div class="button-container">
+      <p role="status"></p>
       <button id="download-table" title="Download table to CSV file" aria-label="Download table to CSV file">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
@@ -285,7 +290,7 @@
     }
 
     function getEvents(code) {
-      const events = new Set();
+      const events = [];
       let position = 0;
       let strict = false;
       for (let line of code.split('\n')) {
@@ -306,20 +311,20 @@
           const lookaheadLine = code.substring(start, end + 1).replaceAll('\n', '');
           try {
             const normalizedEvent = normalizeEvent(lookaheadLine, strict);
-            events.add(normalizedEvent);
+            events.push(normalizedEvent);
           }
           catch { }
           continue;
         }
         try {
           const normalizedEvent = normalizeEvent(line, strict);
-          events.add(normalizedEvent);
+          events.push(normalizedEvent);
         }
         catch {
           continue;
         }
       }
-      return Array.from(events);
+      return events;
     }
 
     function debounce(fn, wait) {
@@ -345,16 +350,18 @@
       tableBody.innerHTML = '';
 
       const events = getEvents(textarea.value);
+      const uniqueEvents = Array.from(new Set(events));
       if (events.length === 0) {
         noEventsMessage.style.setProperty('display', 'revert');
         return;
       }
 
-      for (const event of events) {
+      for (const event of uniqueEvents) {
         const byteArray = keccak256(encoder.encode(event));
         const hash = `0x${[...byteArray].map(b => b.toString(16).padStart(2, '0')).join('')}`;
         tableBody.insertAdjacentHTML('beforeend', `<tr><td>${event}</td><td>${hash}</td></tr>`);
       }
+      buttonContainer.querySelector('p').textContent = `${events.length} event${events.length === 1 ? '' : 's'} found${events.length === uniqueEvents.length ? '' : ' (' + uniqueEvents.length + ' unique)'}`;
       table.style.setProperty('visibility', 'visible');
       table.style.setProperty('opacity', 1);
       buttonContainer.style.setProperty('visibility', 'visible');
