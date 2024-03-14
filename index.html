@@ -72,9 +72,10 @@
       gap: 8px;
     }
 
-    .label-container {
+    .label-container,
+    .button-container {
       display: flex;
-      gap: 4px;
+      align-items: center;
     }
 
     label {
@@ -82,10 +83,10 @@
     }
 
     button {
+      line-height: 0;
       background: none;
       border: none;
       padding: 8px;
-      margin: -8px;
       cursor: pointer;
       transition: filter 400ms;
       color: hsl(216deg 50% 40%);
@@ -98,7 +99,7 @@
     }
 
     button>svg {
-      block-size: 100%;
+      inline-size: 20px;
       pointer-events: none;
     }
 
@@ -128,9 +129,7 @@
     .button-container {
       visibility: hidden;
       opacity: 0;
-      display: flex;
       justify-content: center;
-      gap: 16px;
       transition: opacity 300ms;
     }
 
