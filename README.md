@@ -51,6 +51,14 @@ For example, [here's a permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACu1Y
 
 ![Demonstration of the event-hashes web UI showing the event hashes for the ERC-721 interface.](./.github/permalink.png)
 
+**Useful table tools**
+
+The output is a normal, well-behaved `<table>` element. Accessibility and web browser functions should work as expected.
+
+There are also utilities to download the table as a CSV file or copy it to clipboard, so you can easily export the table to a spreadsheet or other software of your choice.
+
+![An output table from event-hashes, copied into external spreadsheet software.](./.github/spreadsheet.png)
+
 ## Testing
 
 Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACoWPMQ/CIBSEd37FjZKw2EYX/oK6dGw6EHkxLykvTUuNP9+AbalxkAW4794d0JMkouEw9HRw3o80TWbdZ5ZYnc7aKtrbktx2hiUakjm0nbYKWCyDu9OENQosnl7kATc+jgZprQgFJloZpGB86ZnUGoDNt+Uh17mPfGGhn55PjSotO1BlkEt2ag21fXDLbVygmwt0KEmmHP8MpIbkZolK2zcsjjEgYgEAAA==) for testing. The output should be:
