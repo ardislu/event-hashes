@@ -411,7 +411,7 @@
       else {
         const data = [new ClipboardItem({
           'text/plain': new Blob([table.innerText], { type: 'text/plain' }),
-          'text/html': new Blob([table.outerHTML], { type: 'text/html' })
+          'text/html': new Blob([`<style>table{white-space:nowrap}</style>${table.outerHTML}`], { type: 'text/html' })
         })];
         navigator.clipboard.write(data);
       }
