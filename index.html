@@ -405,11 +405,16 @@
 
     document.querySelector('#copy-table').addEventListener('click', async e => {
       const table = document.querySelector('table');
-      const data = [new ClipboardItem({
-        'text/plain': new Blob([table.innerText], { type: 'text/plain' }),
-        'text/html': new Blob([table.outerHTML], { type: 'text/html' })
-      })];
-      navigator.clipboard.write(data);
+      if (window.ClipboardItem === undefined) {
+        navigator.clipboard.writeText(table.innerText);
+      }
+      else {
+        const data = [new ClipboardItem({
+          'text/plain': new Blob([table.innerText], { type: 'text/plain' }),
+          'text/html': new Blob([table.outerHTML], { type: 'text/html' })
+        })];
+        navigator.clipboard.write(data);
+      }
       debounceButton(e.target, clipboardSVG, 'Copy table to clipboard');
     });
 
