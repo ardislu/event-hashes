@@ -171,6 +171,20 @@
     a:focus {
       text-decoration: underline;
     }
+
+    abbr {
+      text-decoration: none;
+    }
+
+    @media (hover: hover) {
+      abbr {
+        text-decoration: underline dotted;
+      }
+
+      abbr:hover {
+        cursor: help;
+      }
+    }
   </style>
 </head>
 
