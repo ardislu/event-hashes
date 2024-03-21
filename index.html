@@ -425,7 +425,7 @@
       else {
         const data = [new ClipboardItem({
           'text/plain': new Blob([table.innerText], { type: 'text/plain' }),
-          'text/html': new Blob([`<style>table{white-space:nowrap}</style>${table.outerHTML}`], { type: 'text/html' })
+          'text/html': new Blob([`<style>table{white-space:nowrap;border-collapse:collapse;mso-ascii-theme-font:minor-latin;}th,td{mso-border-alt:solid windowtext .5pt;}thead{background:#E8E8E8;}</style>${table.outerHTML}`], { type: 'text/html' })
         })];
         navigator.clipboard.write(data);
       }
