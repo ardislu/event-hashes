@@ -365,6 +365,11 @@
       buttonContainer.style.setProperty('opacity', 0);
       tableBody.innerHTML = '';
 
+      // Input has been cleared, reset back to default state
+      if (textarea.value === '') {
+        return;
+      }
+
       const events = getEvents(textarea.value);
       const uniqueEvents = Array.from(new Set(events));
       if (events.length === 0) {
