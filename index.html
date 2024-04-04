@@ -321,6 +321,9 @@
         if ((line.match(/\(/g)?.length ?? 0) > (line.match(/\)/g)?.length ?? 0)) {
           const start = code.indexOf(line, position - originalLineLength - 1);
           const end = code.indexOf(')', start);
+          if (end === -1) { // No closing parenthesis found
+            continue;
+          }
           const lookaheadLine = code.substring(start, end + 1).replaceAll('\n', '');
           try {
             const normalizedEvent = normalizeEvent(lookaheadLine, strict);
