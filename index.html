@@ -444,6 +444,12 @@
       gzipBase64ToText(location.hash.substring(1)).then(text => textarea.value = text);
       textarea.dispatchEvent(new Event('input'));
     }
+
+    addEventListener('keyup', e => {
+      if (e.key === '/') {
+        textarea.focus();
+      }
+    });
   </script>
 </body>
 
