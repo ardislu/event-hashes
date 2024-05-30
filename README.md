@@ -61,13 +61,18 @@ There are also utilities to download the table as a CSV file or copy it to clipb
 
 ## Testing
 
-Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACoWPMQ/CIBSEd37FjZKw2EYX/oK6dGw6EHkxLykvTUuNP9+AbalxkAW4794d0JMkouEw9HRw3o80TWbdZ5ZYnc7aKtrbktx2hiUakjm0nbYKWCyDu9OENQosnl7kATc+jgZprQgFJloZpGB86ZnUGoDNt+Uh17mPfGGhn55PjSotO1BlkEt2ag21fXDLbVygmwt0KEmmHP8MpIbkZolK2zcsjjEgYgEAAA==) for testing. The output should be:
+Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACq1SwU7cMBC9+yvecYOyighqLzlR6AEJuGwlDoiDZU+XEfE4sh1gi/j3yt4s2S0rcWkuSd578+Z5xk2DHzqywaBDZFkreiZJWLEbelpoawPFWO/eI0tqv32vOqWaBr82A0F8cLrnPzqxl8PqrL5/qFlSTTK6+4ep7u6RE8VBG4IWC3pNQQv5MeKJNi8+WKTAzuU0wOSY1RG7QGCx9EoW0GF9WiM/Owozmdm2Rs6BA7wwZxWArvyVWDdjn3jZsxB675+W+pG0nU5UuGsW+pRgG0DN/feIthCl/R56BlV1//qutKNb7WgxO9Xz5xcFuUNWsyQ1zfiSlnYcejb7e7mcEFp8+P0fKHe8WosPBOOdI0kxQ1vllUS2dH6xJU6zvjk5yrWLqsNJU+wufAhkUr8BZ2OWNcTLspTlISOmwCbBeUvKeElBm4RVAW+8JbzNl+cD/PlcEkxTrToF/B7F5BHh1qdzOSKY8fYAP+rd5nXMawOqTr3/BXwBfC1kAwAA) for testing. The output should be:
 
-Event | Keccak-256 Hash
---- | ---
-Simple(address,address,uint256) | 0x0c4aa1b50b54ea9174bfce3c438012e4f2bbf93a058dc8d74185ab16d82ba900
-Simple(uint256[],int256,uint8[]) | 0x2026044affa2e544dcb961375aedefd2b307e1b946edac0491c979b356280220
-Spaces(address,address,uint256) | 0xda28d9a3b64acdf2ca6024d6f102d1771bd9d91df417723b1f14c4ae0856c6d3
-MultiLine(address,address,uint256) | 0x760dd7228125a3ef675a431bf253d71f0e2b83af9ec42e0cfd9d2fae9752fb49
-MultiLineSameName(address,address) | 0xe18b9597b1182141cedf8b007cb04e23cf5a02d16c74ce2c704fb5dfd7516343
-MultiLineSameName(uint256,int256) | 0x06b14b8df51d75cfe7ac7998ad1c26ef4c27486f5002d2467e2153e5223afb65
+> 13 events found (9 unique)
+> 
+> Event | Keccak-256 Hash
+> --- | ---
+> Simple(address,address,uint256) | 0x0c4aa1b50b54ea9174bfce3c438012e4f2bbf93a058dc8d74185ab16d82ba900
+> Simple(uint256[],int256,uint8[]) | 0x2026044affa2e544dcb961375aedefd2b307e1b946edac0491c979b356280220
+> Spaces(address,address,uint256) | 0xda28d9a3b64acdf2ca6024d6f102d1771bd9d91df417723b1f14c4ae0856c6d3
+> MultiLine(address,address,uint256) | 0x760dd7228125a3ef675a431bf253d71f0e2b83af9ec42e0cfd9d2fae9752fb49
+> MultiLineSameName(address,address) | 0xe18b9597b1182141cedf8b007cb04e23cf5a02d16c74ce2c704fb5dfd7516343
+> MultiLineSameName(uint256,int256) | 0x06b14b8df51d75cfe7ac7998ad1c26ef4c27486f5002d2467e2153e5223afb65
+> Duplicate() | 0x1b29ea747187d15c571dad327d15bf6195ee4e3da8d688889df1aa967bc932a6
+> StrictModeEvent1(address) | 0xdc3a255e62df1a4618b1826381a9d4994f73fcfe53923f5adedc7a6c4a2b6852
+> StrictModeEvent2(address) | 0x41a478e2922fd0901233d21296641db526d0774459d7adb8290da705389eb5af
