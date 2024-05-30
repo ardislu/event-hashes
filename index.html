@@ -126,8 +126,18 @@
       border: 1px solid hsl(216deg 50% 80%);
     }
 
-    .no-events {
+    .button-container,
+    .no-events,
+    table {
       display: none;
+      transition: opacity 300ms;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+
+    .no-events {
       text-align: center;
       font-size: 1.2rem;
       font-weight: 700;
@@ -140,10 +150,7 @@
     }
 
     .button-container {
-      visibility: hidden;
-      opacity: 0;
       justify-content: center;
-      transition: opacity 300ms;
     }
 
     .button-container p {
@@ -151,11 +158,8 @@
     }
 
     table {
-      visibility: hidden;
-      opacity: 0;
       border-collapse: collapse;
       margin: auto;
-      transition: opacity 300ms;
     }
 
     tr {
@@ -373,10 +377,8 @@
     const buttonContainer = document.querySelector('.button-container');
     textarea.addEventListener('input', debounce(() => {
       noEventsMessage.style.setProperty('display', 'none');
-      table.style.setProperty('visibility', 'hidden');
-      table.style.setProperty('opacity', 0);
-      buttonContainer.style.setProperty('visibility', 'hidden');
-      buttonContainer.style.setProperty('opacity', 0);
+      table.style.setProperty('display', 'none');
+      buttonContainer.style.setProperty('display', 'none');
       tableBody.innerHTML = '';
 
       // Input has been cleared, reset back to default state
@@ -397,10 +399,8 @@
         tableBody.insertAdjacentHTML('beforeend', `<tr><td>${event}</td><td>${hash}</td></tr>`);
       }
       buttonContainer.querySelector('p').textContent = `${events.length} event${events.length === 1 ? '' : 's'} found${events.length === uniqueEvents.length ? '' : ' (' + uniqueEvents.length + ' unique)'}`;
-      table.style.setProperty('visibility', 'visible');
-      table.style.setProperty('opacity', 1);
-      buttonContainer.style.setProperty('visibility', 'visible');
-      buttonContainer.style.setProperty('opacity', 1);
+      table.style.setProperty('display', 'revert');
+      buttonContainer.style.setProperty('display', 'flex');
     }, 250));
 
     // Set up buttons
