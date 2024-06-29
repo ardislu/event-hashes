@@ -3,7 +3,7 @@
 This is a minimal web utility to calculate the `keccak256` hashes of the normalized event signatures of all the events in a Solidity code block. This hash can then be used with indexers like Etherscan to search for specific logs in the EVM history.
 
 > [!WARNING]<br>
-> **Known issues:**
+> **Known limitations:**
 > - This tool won't work with [user-defined value types](https://docs.soliditylang.org/en/latest/types.html#user-defined-value-types). For events that include these types, you must manually convert the user-defined value type into its equivalent primitive type.
 > - [`anonymous` events](https://docs.soliditylang.org/en/latest/abi-spec.html#events) do not log the hash of the event signature, so this tool is not useful for searching for anonymous event logs.
 
