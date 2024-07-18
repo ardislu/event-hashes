@@ -264,6 +264,19 @@
     // From noble-hashes v1.4.0
     import { keccak256 } from '/keccak256.js';
 
+    const encoder = new TextEncoder();
+    const textarea = document.querySelector('textarea');
+    const noEventsMessage = document.querySelector('.no-events');
+    const table = document.querySelector('table');
+    const tableBody = document.querySelector('table tbody');
+    const buttonContainer = document.querySelector('.button-container');
+    const icons = {
+      check: '<polyline points="20 6 9 17 4 12"/>',
+      permalink: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+      download: '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>',
+      clipboard: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>'
+    }
+
     async function textToGzipBase64(text) {
       const stream = new Blob([text]).stream();
       const compressed = stream.pipeThrough(new CompressionStream('gzip'));
@@ -369,12 +382,6 @@
       }
     }
 
-    const encoder = new TextEncoder();
-    const textarea = document.querySelector('textarea');
-    const noEventsMessage = document.querySelector('.no-events');
-    const table = document.querySelector('table');
-    const tableBody = document.querySelector('table tbody');
-    const buttonContainer = document.querySelector('.button-container');
     textarea.addEventListener('input', debounce(() => {
       noEventsMessage.style.setProperty('display', 'none');
       table.style.setProperty('display', 'none');
@@ -404,16 +411,11 @@
     }, 250));
 
     // Set up buttons
-    const checkSVG = '<polyline points="20 6 9 17 4 12"/>';
-    const permalinkSVG = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />';
-    const downloadSVG = '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" />';
-    const clipboardSVG = '<rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />';
-
     function debounceButton(button, icon, message) {
       button.setAttribute('aria-label', 'Copied!');
       const svg = button.querySelector('svg');
       svg.style.setProperty('stroke', 'green');
-      svg.innerHTML = checkSVG;
+      svg.innerHTML = icons['check'];
       setTimeout(() => {
         svg.innerHTML = icon;
         svg.style.setProperty('stroke', 'currentColor');
@@ -425,7 +427,7 @@
       const b64 = await textToGzipBase64(textarea.value);
       const url = `${location.origin}#${b64}`;
       navigator.clipboard.writeText(url);
-      debounceButton(e.target, permalinkSVG, 'Copy permalink to clipboard');
+      debounceButton(e.target, icons['permalink'], 'Copy permalink to clipboard');
     });
 
     document.querySelector('#download-table').addEventListener('click', async e => {
@@ -436,7 +438,7 @@
       a.href = URL.createObjectURL(file);
       a.download = file.name;
       a.click();
-      debounceButton(e.target, downloadSVG, 'Download table to CSV');
+      debounceButton(e.target, icons['download'], 'Download table to CSV');
     });
 
     document.querySelector('#copy-table').addEventListener('click', async e => {
@@ -451,7 +453,7 @@
         })];
         navigator.clipboard.write(data);
       }
-      debounceButton(e.target, clipboardSVG, 'Copy table to clipboard');
+      debounceButton(e.target, icons['clipboard'], 'Copy table to clipboard');
     });
 
     if (location.hash !== '') {
