@@ -466,6 +466,18 @@
         textarea.focus();
       }
     });
+
+    // Fix Chrome selecting trailing element on triple (or quad) click, resulting in a trailing tab or newline
+    // when copying text from the table.
+    addEventListener('click', e => {
+      if (e.detail >= 3 && table.contains(e.target)) {
+        const selection = getSelection();
+        const range = selection.getRangeAt(0);
+        const textNode = e.target.firstChild;
+        range.setStart(textNode, 0);
+        range.setEnd(textNode, textNode.length);
+      };
+    });
   </script>
 </body>
 
