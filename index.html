@@ -430,8 +430,7 @@
       debounceButton(e.target, icons['permalink'], 'Copy permalink to clipboard');
     });
 
-    document.querySelector('#download-table').addEventListener('click', async e => {
-      const table = document.querySelector('table');
+    document.querySelector('#download-table').addEventListener('click', e => {
       const csv = '"' + table.innerText.replaceAll('"', '""').replaceAll('\t', '","').replaceAll('\n', '"\n"') + '"';
       const file = new File([csv], `Event_Hashes_${Date.now()}`, { type: 'text/csv' });
       const a = document.createElement('a');
@@ -441,8 +440,7 @@
       debounceButton(e.target, icons['download'], 'Download table to CSV');
     });
 
-    document.querySelector('#copy-table').addEventListener('click', async e => {
-      const table = document.querySelector('table');
+    document.querySelector('#copy-table').addEventListener('click', e => {
       if (window.ClipboardItem === undefined) {
         navigator.clipboard.writeText(table.innerText);
       }
