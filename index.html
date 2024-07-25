@@ -314,6 +314,9 @@
         const trimmed = topic.trim();
         const trailingParens = trimmed.match(/\)*[\[\]]*$/)[0] ?? '';
         const split = trimmed.split(' ');
+        if (/index_topic_(1|2|3)/.test(split[0])) { // Nonstandard "index_topic_*" is injected by Etherscan, e.g. "index_topic_1 address from"
+          split.shift();
+        }
         return `${split[0]}${split.length > 1 ? trailingParens : ''}`;
       });
 

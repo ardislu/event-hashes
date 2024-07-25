@@ -61,9 +61,9 @@ There are also utilities to download the table as a CSV file or copy it to clipb
 
 ## Testing
 
-Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACq1SwU7cMBC9+yvecYOyighqLzlR6AEJuGwlDoiDZU+XEfE4sh1gi/j3yt4s2S0rcWkuSd578+Z5xk2DHzqywaBDZFkreiZJWLEbelpoawPFWO/eI0tqv32vOqWaBr82A0F8cLrnPzqxl8PqrL5/qFlSTTK6+4ep7u6RE8VBG4IWC3pNQQv5MeKJNi8+WKTAzuU0wOSY1RG7QGCx9EoW0GF9WiM/Owozmdm2Rs6BA7wwZxWArvyVWDdjn3jZsxB675+W+pG0nU5UuGsW+pRgG0DN/feIthCl/R56BlV1//qutKNb7WgxO9Xz5xcFuUNWsyQ1zfiSlnYcejb7e7mcEFp8+P0fKHe8WosPBOOdI0kxQ1vllUS2dH6xJU6zvjk5yrWLqsNJU+wufAhkUr8BZ2OWNcTLspTlISOmwCbBeUvKeElBm4RVAW+8JbzNl+cD/PlcEkxTrToF/B7F5BHh1qdzOSKY8fYAP+rd5nXMawOqTr3/BXwBfC1kAwAA) for testing. The output should be:
+Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACq1SwW7bMAy96yt4jAMHRly0F5+6docAbQ9NgR2KohAkNiVqUYZEZ82G/fsgxYmdLcAu80Xme+Tjo6iqgi86koFOh0i8UbhFFliT61qcaWsDxlgezp5Y6surolGqquBp1yGwD0639EMLeT6tTtnPLyWxlMi9e34Z6r69k2DstEHQbAE/JWhG30f4wN13HyxIIOeSG4BBMWVHOBgCYoufaAF02CxLSN+BgpFMbF1C8gEneGYuCgBocpRt3fet0KIlRmi9/1jod9R2mChzd8T4l4O9ATX2nxB1JnL7CXoBqmj+1F1rhw/a4WxUKsfffxSkDimbWNRwx7e4sH3Xkpnu5XZAcHbU+z9Q6viIzm9xus0886v4jszrXK1S9JSC2ZRYHi/uLXhXnhTVR078fo315RVsddvj0HS1YR8QjHcOWWKC9vZWHMni9c2eWCaT1fwsV8+KBuZVlrvxIaCRdgeUhIk3wJ4XuSzNA1ECGQHnLSrjWYI2AusM3nuL8HN8sUfw6zY7GEYpGgXw1rNJe4EHL9d8JmHE6xP8rHad3sD4VgCKRv36DeEY2G/ZAwAA) for testing. The output should be:
 
-> 13 events found (9 unique)
+> 14 events found (10 unique)
 > 
 > Event | Keccak-256 Hash
 > --- | ---
@@ -74,6 +74,7 @@ Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACq1SwU7cMBC9+yvec
 > MultiLineSameName(address,address) | 0xe18b9597b1182141cedf8b007cb04e23cf5a02d16c74ce2c704fb5dfd7516343
 > MultiLineSameName(uint256,int256) | 0x06b14b8df51d75cfe7ac7998ad1c26ef4c27486f5002d2467e2153e5223afb65
 > Duplicate() | 0x1b29ea747187d15c571dad327d15bf6195ee4e3da8d688889df1aa967bc932a6
+> IndexTopic(address,address,uint256) | 0xb1228749f1442a6eabefa98b8b54b638ca37671df1d1c10b5e9a8f00e23a7e52
 > StrictModeEvent1(address) | 0xdc3a255e62df1a4618b1826381a9d4994f73fcfe53923f5adedc7a6c4a2b6852
 > StrictModeEvent2(address) | 0x41a478e2922fd0901233d21296641db526d0774459d7adb8290da705389eb5af
 
