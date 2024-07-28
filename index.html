@@ -426,10 +426,13 @@
       }, 2000);
     }
 
-    document.querySelector('#copy-permalink').addEventListener('click', async e => {
-      const b64 = await textToGzipBase64(textarea.value);
-      const url = `${location.origin}#${b64}`;
-      navigator.clipboard.writeText(url);
+    document.querySelector('#copy-permalink').addEventListener('click', e => {
+      const data = [new ClipboardItem({
+        'text/plain': textToGzipBase64(textarea.value)
+          .then(b64 => `${location.origin}#${b64}`)
+          .then(url => new Blob([url], { type: 'text/plain' }))
+      })];
+      navigator.clipboard.write(data);
       debounceButton(e.target, icons['permalink'], 'Copy permalink to clipboard');
     });
 
