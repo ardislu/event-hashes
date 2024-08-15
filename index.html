@@ -204,6 +204,10 @@
         cursor: help;
       }
     }
+
+    #clear-code {
+      display: none;
+    }
   </style>
 </head>
 
@@ -220,6 +224,15 @@
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
           <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
+      </button>
+      <button id="clear-code" title="Delete all lines that do not contain events" aria-label="Delete all lines that do not contain events">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 12H3" />
+          <path d="M16 6H3" />
+          <path d="M16 18H3" />
+          <path d="m19 10-4 4" />
+          <path d="m15 10 4 4" />
         </svg>
       </button>
     </div>
@@ -275,8 +288,10 @@
       check: '<polyline points="20 6 9 17 4 12"/>',
       permalink: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
       download: '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>',
-      clipboard: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>'
+      clipboard: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+      clear: '<path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="m19 10-4 4"/><path d="m15 10 4 4"/>'
     }
+    const originalEvents = [];
 
     async function textToGzipBase64(text) {
       const stream = new Blob([text]).stream();
@@ -338,6 +353,7 @@
     }
 
     function getEvents(code) {
+      originalEvents.length = 0;
       const events = [];
       let position = 0;
       let strict = false;
@@ -362,6 +378,7 @@
           const lookaheadLine = code.substring(start, end + 1).replaceAll('\n', '');
           try {
             const normalizedEvent = normalizeEvent(lookaheadLine, strict);
+            originalEvents.push(lookaheadLine);
             events.push(normalizedEvent);
           }
           catch { }
@@ -369,6 +386,7 @@
         }
         try {
           const normalizedEvent = normalizeEvent(line, strict);
+          originalEvents.push(line);
           events.push(normalizedEvent);
         }
         catch {
@@ -403,6 +421,12 @@
         noEventsMessage.style.setProperty('display', 'revert');
         return;
       }
+      if (textarea.value.length > originalEvents.join('\n').length) {
+        document.querySelector('#clear-code').style.display = 'unset';
+      }
+      else {
+        document.querySelector('#clear-code').style.display = 'none';
+      }
 
       for (const event of uniqueEvents) {
         const byteArray = keccak256(encoder.encode(event));
@@ -435,6 +459,13 @@
       })];
       navigator.clipboard.write(data);
       debounceButton(e.target, icons['permalink'], 'Copy permalink to clipboard');
+    });
+
+    document.querySelector('#clear-code').addEventListener('click', e => {
+      textarea.select();
+      // Using deprecated function is required to preserve undo/redo behavior
+      document.execCommand('insertText', false, originalEvents.join('\n').replaceAll(/\s{2,}/g, ' ')); // .replaceAll flattens multi-line definitions
+      e.target.style.display = 'none';
     });
 
     document.querySelector('#download-table').addEventListener('click', e => {
