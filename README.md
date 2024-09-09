@@ -59,6 +59,10 @@ There are also utilities to download the table as a CSV file or copy it to clipb
 
 ![An output table from event-hashes, copied into external spreadsheet software.](./.github/spreadsheet.png)
 
+**Delete all lines without events**
+
+There is a button to delete all lines in the input code block that do *not* contain event definitions. This button is useful for identifying the original event definitions in a large code block and reducing the permalink size.
+
 ## Testing
 
 Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACq1SwW7bMAy96yt4jAMHRly0F5+6docAbQ9NgR2KohAkNiVqUYZEZ82G/fsgxYmdLcAu80Xme+Tjo6iqgi86koFOh0i8UbhFFliT61qcaWsDxlgezp5Y6surolGqquBp1yGwD0639EMLeT6tTtnPLyWxlMi9e34Z6r69k2DstEHQbAE/JWhG30f4wN13HyxIIOeSG4BBMWVHOBgCYoufaAF02CxLSN+BgpFMbF1C8gEneGYuCgBocpRt3fet0KIlRmi9/1jod9R2mChzd8T4l4O9ATX2nxB1JnL7CXoBqmj+1F1rhw/a4WxUKsfffxSkDimbWNRwx7e4sH3Xkpnu5XZAcHbU+z9Q6viIzm9xus0886v4jszrXK1S9JSC2ZRYHi/uLXhXnhTVR078fo315RVsddvj0HS1YR8QjHcOWWKC9vZWHMni9c2eWCaT1fwsV8+KBuZVlrvxIaCRdgeUhIk3wJ4XuSzNA1ECGQHnLSrjWYI2AusM3nuL8HN8sUfw6zY7GEYpGgXw1rNJe4EHL9d8JmHE6xP8rHad3sD4VgCKRv36DeEY2G/ZAwAA) for testing. The output should be:
