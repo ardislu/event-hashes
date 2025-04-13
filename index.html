@@ -313,11 +313,22 @@
       return text;
     }
 
-    function normalizeEvent(event, strict = false) {
-      // Clean all characters that definitely do not affect the signature
-      const commentIndex = event.indexOf('//');
-      event = commentIndex === -1 ? event : event.substring(0, commentIndex);
+    function trimComments(event) {
+      const i1 = event.indexOf('//');
+      event = i1 === -1 ? event : event.substring(0, i1);
+      const i2 = event.indexOf('/*');
+      event = i2 === -1 ? event : event.substring(0, i2);
       event = event.trim();
+      return event;
+    }
+
+    function normalizeEvent(event, strict = false) {
+      if (event.indexOf('\n') !== -1) { // Multi-line definition
+        event = event.split('\n').map(trimComments).join('');
+      }
+      else {
+        event = trimComments(event);
+      }
 
       // Split the event name and the event topics
       const eventRegex = strict ?
@@ -376,7 +387,7 @@
           if (end === -1) { // No closing parenthesis found
             continue;
           }
-          const lookaheadLine = code.substring(start, end + 1).replaceAll('\n', '');
+          const lookaheadLine = code.substring(start, end + 1);
           try {
             const normalizedEvent = normalizeEvent(lookaheadLine, strict);
             originalEvents.push(lookaheadLine);
