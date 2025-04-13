@@ -323,13 +323,6 @@
     }
 
     function normalizeEvent(event, strict = false) {
-      if (event.indexOf('\n') !== -1) { // Multi-line definition
-        event = event.split('\n').map(trimComments).join('');
-      }
-      else {
-        event = trimComments(event);
-      }
-
       // Split the event name and the event topics
       const eventRegex = strict ?
         /^(event )(?<name>[a-zA-Z$_][a-zA-Z0-9$_]*) *\((?<topics>.*?)(?!.+\))/ :
@@ -365,6 +358,7 @@
     }
 
     function getEvents(code) {
+      code = code.split('\n').map(trimComments).join('\n');
       originalEvents.length = 0;
       const events = [];
       let position = 0;
@@ -372,7 +366,6 @@
       for (let line of code.split('\n')) {
         const originalLineLength = line.length;
         position += originalLineLength;
-        line = line.trim();
         if (line === '') {
           continue;
         }
@@ -387,7 +380,7 @@
           if (end === -1) { // No closing parenthesis found
             continue;
           }
-          const lookaheadLine = code.substring(start, end + 1);
+          const lookaheadLine = code.substring(start, end + 1).replaceAll('\n', '');
           try {
             const normalizedEvent = normalizeEvent(lookaheadLine, strict);
             originalEvents.push(lookaheadLine);
