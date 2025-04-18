@@ -444,15 +444,22 @@
     }, 250));
 
     // Set up buttons
-    function debounceButton(button, icon, message) {
-      button.setAttribute('aria-label', 'Copied!');
+    const buttonTypes = {
+      copyPermalink: { icon: 'permalink', message: 'Copy permalink to clipboard', success: 'Copied!', id: null },
+      downloadTable: { icon: 'download', message: 'Download table to CSV', success: 'Downloaded!', id: null },
+      copyTable: { icon: 'clipboard', message: 'Copy table to clipboard', success: 'Copied!', id: null }
+    }
+    function debounceButton(button, type) {
+      const data = buttonTypes[type];
       const svg = button.querySelector('svg');
+      button.setAttribute('aria-label', data.success);
       svg.style.setProperty('stroke', 'green');
       svg.innerHTML = icons['check'];
-      setTimeout(() => {
-        svg.innerHTML = icon;
+      clearTimeout(data.id);
+      data.id = setTimeout(() => {
+        svg.innerHTML = icons[data.icon];
         svg.style.setProperty('stroke', 'currentColor');
-        button.setAttribute('aria-label', message);
+        button.setAttribute('aria-label', data.message);
       }, 2000);
     }
 
@@ -463,7 +470,7 @@
           .then(url => new Blob([url], { type: 'text/plain' }))
       })];
       navigator.clipboard.write(data);
-      debounceButton(e.target, icons['permalink'], 'Copy permalink to clipboard');
+      debounceButton(e.target, 'copyPermalink');
     });
 
     document.querySelector('#clear-code').addEventListener('click', e => {
@@ -480,7 +487,7 @@
       a.href = URL.createObjectURL(file);
       a.download = file.name;
       a.click();
-      debounceButton(e.target, icons['download'], 'Download table to CSV');
+      debounceButton(e.target, 'downloadTable');
     });
 
     document.querySelector('#copy-table').addEventListener('click', e => {
@@ -489,7 +496,7 @@
         'text/html': new Blob([`<style>table{white-space:nowrap;border-collapse:collapse;mso-ascii-theme-font:minor-latin;}th,td{mso-border-alt:solid windowtext .5pt;}thead{background:#E8E8E8;}</style>${table.outerHTML}`], { type: 'text/html' })
       })];
       navigator.clipboard.write(data);
-      debounceButton(e.target, icons['clipboard'], 'Copy table to clipboard');
+      debounceButton(e.target, 'copyTable');
     });
 
     if (location.hash !== '') {
