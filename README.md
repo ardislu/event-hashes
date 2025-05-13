@@ -67,7 +67,7 @@ There is a button to delete all lines in the input code block that do *not* cont
 
 Use [this permalink](https://event-hashes.ardis.lu#H4sIAAAAAAAACq1TwW7bMAy96yt4tA0HRhy0l5yydocAazEsBXYoikKT2FSoRRmSnDUb9u8DFSV2tgC7zBdb7z2Sj6TcNPBBBqOglz4Y2grcIUXYGNt3WEitPYZQH9+DodheXZdLIZoGHvY9AjlvZWd+yGgcnUez+vGpNhRrpME+PuW4r68mYuilQpCkAd+jl4RuCPCG++/Oa4jeWMtuAHJGVgc4GgJDGt9RA0i/ndfAz5GCkWS2rYF9wBmemEUJAMt0Srbuhi6aWWcIoXPubSZfUercUeI+GcK/HBwMiLH+hGgTkcpP0AWIcvln3o20eC8tFmOmevz8RwBXYLWhKPKMb3Gmh74zarqX24xgccr3fyCu+AWt2+F0m6nn5+h6o54rsebTAx+KKTE/De7FO1ufBbUnLrrDGtura9jJbsBcdL0l5xGUsxYpBoYO9tYUjMbVzYGYs8mmusi1RbmEqhFNVQm4LFlwOGsO5Gfppc1UmCwMZA1NA5mB+XH332poqhPccqLMKNYXZS66EmVq6sZ5jyp2ezDcnqEtkKNZEvFUIURvVATrNArlKHqpImwSeOc0ws/xvzmBH3dpDtkq9wMvAym+HXDv4oouCEa8PcMv5m55EuONBSiX4tdvNFCEL18EAAA=) for testing. The output should be:
 
-> 14 events found (10 unique)
+> 15 events found (11 unique)
 > 
 > Event | Keccak-256 Hash
 > --- | ---
