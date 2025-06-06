@@ -80,6 +80,7 @@
 
     label {
       font-weight: 700;
+      padding-block: 8px;
     }
 
     button,
@@ -206,6 +207,7 @@
       }
     }
 
+    #copy-permalink,
     #clear-code {
       display: none;
     }
@@ -417,9 +419,11 @@
 
       // Input has been cleared, reset back to default state
       if (textarea.value === '') {
+        document.querySelector('#copy-permalink').style.display = 'none';
         document.querySelector('#clear-code').style.display = 'none';
         return;
       }
+      document.querySelector('#copy-permalink').style.display = 'unset';
 
       const events = getEvents(textarea.value);
       const uniqueEvents = Array.from(new Set(events));
