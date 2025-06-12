@@ -315,11 +315,20 @@
       return text;
     }
 
-    function trimComments(event) {
-      const i1 = event.indexOf('//');
-      event = i1 === -1 ? event : event.substring(0, i1);
-      const i2 = event.indexOf('/*');
-      event = i2 === -1 ? event : event.substring(0, i2);
+    function trimMultiLineComments(event) {
+      let i1, i2;
+      while (i1 !== -1) {
+        i1 = event.indexOf('/*');
+        i2 = event.indexOf('*/', i1);
+        event = i1 === -1 ? event : `${event.substring(0, i1)}${event.substring(i2 + 2)}`;
+        event = event.trim();
+      }
+      return event;
+    }
+
+    function trimSingleLineComments(event) {
+      const i = event.indexOf('//');
+      event = i === -1 ? event : event.substring(0, i);
       event = event.trim();
       return event;
     }
@@ -360,7 +369,8 @@
     }
 
     function getEvents(code) {
-      code = code.split('\n').map(trimComments).join('\n');
+      code = trimMultiLineComments(code);
+      code = code.split('\n').map(trimSingleLineComments).join('\n');
       originalEvents.length = 0;
       const events = [];
       let position = 0;
