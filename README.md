@@ -9,6 +9,8 @@ This is a minimal web utility to calculate the `keccak256` hashes of the normali
 
 Also check out [this gist](https://gist.github.com/ardislu/09b0393ae632756e2cf879cc4231f41a) to copy all the code blocks at once from an Etherscan smart contract code page; you can then directly paste the copied code into this tool to quickly parse all the events.
 
+Code repository mirrors: [GitHub](https://github.com/ardislu/event-hashes), [Codeberg](https://codeberg.org/ardislu/event-hashes), [git.ardis.lu](https://git.ardis.lu/event-hashes)
+
 ## Example
 
 ![Demonstration of the event-hashes web UI hashing the ERC-20 Transfer event.](./.github/event-hashes.png)
