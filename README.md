@@ -7,7 +7,7 @@ This is a minimal web utility to calculate the `keccak256` hashes of the normali
 > - This tool won't work with [user-defined value types](https://docs.soliditylang.org/en/latest/types.html#user-defined-value-types). For events that include these types, you must manually convert the user-defined value type into its equivalent primitive type.
 > - [`anonymous` events](https://docs.soliditylang.org/en/latest/abi-spec.html#events) do not log the hash of the event signature, so this tool is not useful for searching for anonymous event logs.
 
-Also check out [this gist](https://gist.github.com/ardislu/09b0393ae632756e2cf879cc4231f41a) to copy all the code blocks at once from an Etherscan smart contract code page; you can then directly paste the copied code into this tool to quickly parse all the events.
+Also check out [this gist](https://gist.github.com/ardislu/5eb08523b343c9edf134273d29dbe1dd) to copy all the code at once from an Etherscan smart contract code page; you can then directly paste the copied code into this tool to quickly parse all the events.
 
 Code repository mirrors: [GitHub](https://github.com/ardislu/event-hashes), [Codeberg](https://codeberg.org/ardislu/event-hashes), [git.ardis.lu](https://git.ardis.lu/event-hashes)
 
