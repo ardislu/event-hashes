@@ -36,12 +36,19 @@
 
     :root {
       font-family: 'Inter', sans-serif;
+      color-scheme: light dark;
+      --bg-color: light-dark(hsl(216deg 50% 95%), hsl(216deg 40% 20%));
+      --font-color: light-dark(hsl(216deg 50% 5%), hsl(216deg 50% 90%));
+      --accent-color: light-dark(hsl(216deg 50% 40%), hsl(216deg 70% 80%));
+      --accent-hover-color: light-dark(hsl(216deg 50% 50%), hsl(216deg 50% 50%));
+      --border-color: light-dark(hsl(216deg 50% 80%), hsl(216deg 50% 30%));
+      --row-hover-color: light-dark(hsl(222deg 50% 90%), hsl(222deg 40% 30%));
     }
 
     body {
       min-block-size: 100dvb;
-      background: hsl(216deg 50% 95%);
-      color: hsl(216deg 50% 5%);
+      background: var(--bg-color);
+      color: var(--font-color);
       display: grid;
       grid-template-rows: auto 1fr auto;
       container-type: inline-size;
@@ -93,7 +100,7 @@
 
       &:focus-within {
         transition: outline-color 200ms;
-        outline-color: hsl(216deg 50% 40%);
+        outline-color: var(--accent-color);
       }
     }
 
@@ -104,12 +111,12 @@
       padding: 8px;
       cursor: pointer;
       transition: filter 400ms;
-      color: hsl(216deg 50% 40%);
+      color: var(--accent-color);
     }
 
     button:hover,
     button:focus-within {
-      filter: drop-shadow(0 0 12px hsl(216deg 50% 50%));
+      filter: drop-shadow(0 0 12px var(--accent-hover-color));
       transition: filter 200ms;
     }
 
@@ -125,7 +132,7 @@
       min-block-size: 3.1rem;
       block-size: 15rem;
       padding: 4px;
-      border: 1px solid hsl(216deg 50% 80%);
+      border: 1px solid var(--border-color);
     }
 
     .button-container,
@@ -170,7 +177,7 @@
 
     tr:hover,
     tr:focus-within {
-      background: hsl(222deg 50% 90%);
+      background: var(--row-hover-color);
       transition: background-color 200ms;
     }
 
@@ -184,12 +191,12 @@
     a {
       font-weight: 700;
       text-decoration: none;
-      color: hsl(216deg 50% 40%);
+      color: var(--accent-color);
     }
 
     a:hover,
     a:focus {
-      text-decoration: 2px underline hsl(216deg 50% 40%);
+      text-decoration: 2px underline var(--accent-color);
       text-decoration-line: underline;
     }
 
